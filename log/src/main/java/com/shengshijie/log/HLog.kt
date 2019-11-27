@@ -1,18 +1,21 @@
 package com.shengshijie.log
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.tencent.mars.xlog.Log
 import com.tencent.mars.xlog.Xlog
 import timber.log.Timber
 
-class LogInit {
+object HLog {
 
     init {
         System.loadLibrary("c++_shared")
         System.loadLibrary("marsxlog")
     }
 
+    @SuppressLint("LogNotTimber")
     fun init(application: Application, prefix: String) {
+        android.util.Log.i(javaClass.simpleName, "- - - - - - init - - - - - -")
         val folder = application.getExternalFilesDir(null)?.absolutePath
         Xlog.appenderOpen(
             Xlog.LEVEL_DEBUG,
@@ -29,14 +32,20 @@ class LogInit {
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
                 super.log(priority, tag, message, t)
                 when (priority) {
-                    Xlog.LEVEL_VERBOSE -> if (BuildConfig.DEBUG) Log.v(tag, message)
-                    Xlog.LEVEL_DEBUG -> if (BuildConfig.DEBUG) Log.d(tag, message)
-                    Xlog.LEVEL_INFO -> Log.i(tag, message)
-                    Xlog.LEVEL_WARNING -> Log.w(tag, message)
-                    Xlog.LEVEL_ERROR -> Log.e(tag, message)
+                    android.util.Log.VERBOSE -> if (BuildConfig.DEBUG) Log.v(tag, message)
+                    android.util.Log.DEBUG -> if (BuildConfig.DEBUG) Log.d(tag, message)
+                    android.util.Log.INFO -> Log.i(tag, message)
+                    android.util.Log.WARN -> Log.w(tag, message)
+                    android.util.Log.ERROR -> Log.e(tag, message)
                 }
             }
         })
+    }
+
+    @SuppressLint("LogNotTimber")
+    fun destroy() {
+        android.util.Log.i(javaClass.simpleName, "- - - - - - destroy - - - - - -")
+        Log.appenderClose()
     }
 
 }

@@ -1,28 +1,34 @@
 package com.shengshijie.hlog
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.shengshijie.bright.InputDialog
-import com.shengshijie.log.LogInit
+import com.shengshijie.log.HLog
 import timber.log.Timber
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        LogInit().init(application, "RFT")
+        HLog.init(application, "RFT")
     }
 
     fun test(view: View) {
-        val inputDialog = InputDialog.Builder(this)
-            .setTitle("")
-            .setMessage("")
-            .setOnClickPositive { iInputDialog, text -> Timber.e("ee") }
-            .create()
-            .show()
+        thread {
+            for (i in 1..100) {
+                Timber.i("init")
+            }
 
+        }
+    }
+
+    override fun onDestroy() {
+        HLog.destroy()
+        super.onDestroy()
     }
 
 }
