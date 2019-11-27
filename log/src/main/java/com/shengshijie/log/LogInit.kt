@@ -1,11 +1,9 @@
 package com.shengshijie.log
 
 import android.app.Application
-import android.os.Environment
 import com.tencent.mars.xlog.Log
 import com.tencent.mars.xlog.Xlog
 import timber.log.Timber
-import java.io.File
 
 class LogInit {
 
@@ -14,15 +12,14 @@ class LogInit {
         System.loadLibrary("marsxlog")
     }
 
-    fun init(application: Application, folderStr: String) {
-        val diskPath = Environment.getExternalStorageDirectory().absolutePath
-        val folder = diskPath + File.separatorChar + folderStr
+    fun init(application: Application, prefix: String) {
+        val folder = application.getExternalFilesDir(null)?.absolutePath
         Xlog.appenderOpen(
             Xlog.LEVEL_DEBUG,
             Xlog.AppednerModeAsync,
             folder,
             folder,
-            folderStr,
+            prefix,
             31,
             ""
         )
