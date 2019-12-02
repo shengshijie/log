@@ -4,7 +4,7 @@ import android.content.Context
 
 interface ILog {
 
-    fun init(context: Context, prefix: String)
+    fun init(context: Context, dir: String?, tag: String?)
 
     fun v(tag: String?, msg: String)
 

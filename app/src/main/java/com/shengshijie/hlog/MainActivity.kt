@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.shengshijie.log.HLog
+import com.shengshijie.log.LogbackImpl
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -21,7 +22,8 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        HLog.init(application, "RFT")
+        HLog.setLogImpl(LogbackImpl().apply { usedb = false })
+        HLog.init(application, getExternalFilesDir(null)?.absolutePath, "RFT")
         logTask()
     }
 

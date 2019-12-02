@@ -4,21 +4,12 @@ import android.content.Context
 import com.tencent.mars.xlog.Log
 import com.tencent.mars.xlog.Xlog
 
-class XLogImpl: ILog {
+class XLogImpl : ILog {
 
-    override fun init(context: Context, prefix: String) {
+    override fun init(context: Context, dir: String?, tag: String?) {
         System.loadLibrary("c++_shared")
         System.loadLibrary("marsxlog")
-        val folder = context.getExternalFilesDir(null)?.absolutePath
-        Xlog.appenderOpen(
-            Xlog.LEVEL_DEBUG,
-            Xlog.AppednerModeAsync,
-            folder,
-            folder,
-            prefix,
-            31,
-            ""
-        )
+        Xlog.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, dir, dir, tag, 31, "")
         Xlog.setConsoleLogOpen(false)
         Log.setLogImp(Xlog())
     }

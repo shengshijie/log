@@ -13,9 +13,9 @@ object HLog : ILog {
         this.log = log
     }
 
-    override fun init(context: Context, prefix: String) {
-        CrashUtils.init(context, null)
-        log.init(context, prefix)
+    override fun init(context: Context, dir: String?, tag: String?) {
+        CrashUtils.init(context, dir,null)
+        log.init(context, dir, tag)
         Timber.plant(object : Timber.DebugTree() {
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
                 super.log(priority, tag, message, t)

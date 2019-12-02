@@ -11,7 +11,7 @@ import java.util.*
 
 internal object CrashUtils {
 
-    fun init(context: Context, f: ((Throwable) -> Unit)?) {
+    fun init(context: Context,  dir: String?, f: ((Throwable) -> Unit)?) {
         val pi: PackageInfo = context.packageManager
             .getPackageInfo(context.packageName, 0)
         val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
@@ -40,7 +40,7 @@ internal object CrashUtils {
             pw.flush()
             sb.append(sw.toString())
             val crashInfo = sb.toString()
-            File(context.getExternalFilesDir(null), "crash $time.txt").writeText(crashInfo)
+            File(dir, "crash $time.txt").writeText(crashInfo)
             f?.invoke(e)
             uncaughtExceptionHandler?.uncaughtException(t, e)
         }
