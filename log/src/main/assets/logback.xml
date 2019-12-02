@@ -1,0 +1,78 @@
+<configuration debug='false'>
+
+    <property name="LOG_DIR" value="/sdcard/rft"/>
+    <appender name="LOGCAT" class="ch.qos.logback.classic.android.LogcatAppender">
+        <encoder>
+            <pattern>%-5relative [%thread][%file:%M:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+<!--    <appender name="BASE_FILE" class="ch.qos.logback.core.FileAppender">-->
+<!--        <lazy>true</lazy>-->
+<!--        <append>true</append>-->
+<!--        <file>${LOG_DIR}/rft.log</file>-->
+<!--        <encoder>-->
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%M:%line] - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+    <appender name="BASE_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <fileNamePattern>${LOG_DIR}/%d{yyyy-MM-dd}.log</fileNamePattern>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%M:%line] - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/%d{yyyy-MM, aux}/%d.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>10MB</maxFileSize>
+        </triggeringPolicy>
+        <layout class="ch.qos.logback.classic.html.HTMLLayout"/>
+    </appender>
+    <logger name="logToFile">
+        <appender-ref ref="BASE_ROLL_FILE"/>
+    </logger>
+    <root level="TRACE">
+        <appender-ref ref="LOGCAT"/>
+    </root>
+
+    <!--支持的level-->
+    <!--TRACE-->
+    <!--DEBUG-->
+    <!--INFO-->
+    <!--WARN-->
+    <!--ERROR-->
+
+    <!--<pattern>
+      %d{yyyy-MM-dd HH:mm:ss} [%level] - %msg%n
+      Logger: %logger
+      Class: %class
+      File: %file
+      Caller: %caller
+      Line: %line
+      Message: %m
+      Method: %M
+      Relative: %relative
+      Thread: %thread
+      Exception: %ex
+      xException: %xEx
+      nopException: %nopex
+      rException: %rEx
+      Marker: %marker
+      %n
+  </pattern>-->
+
+    <!--引用其他位置的配置信息-->
+    <!--<includes>-->
+    <!--<include file="/sdcard/foo.xml"/>-->
+    <!--<include resource="assets/config/test.xml"/>-->
+    <!--<include resource="AndroidManifest.xml"/>-->
+
+    <!--<include file="/sdcard/logback/logback-test.xml"/>-->
+    <!--<include file="/sdcard/logback/logback.xml"/>-->
+    <!--<include resource="AndroidManifest.xml"/>-->
+    <!--<include resource="assets/logback-test.xml"/>-->
+    <!--<include resource="assets/logback.xml"/>-->
+    <!--</includes>-->
+</configuration>
