@@ -3,6 +3,7 @@ package com.shengshijie.log
 import android.content.Context
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.android.LogcatAppender
 import ch.qos.logback.classic.android.SQLiteAppender
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent
@@ -18,7 +19,11 @@ class LogbackImpl : ILog {
 
     private var log: Logger? = null
 
-     var usedb: Boolean = false
+    var logcat: Boolean = true
+
+    var file: Boolean = false
+
+    var db: Boolean = false
 
     override fun init(context: Context, dir: String?, tag: String?) {
         configureLogbackDirectly(dir)
@@ -26,23 +31,23 @@ class LogbackImpl : ILog {
     }
 
     override fun v(tag: String?, msg: String) {
-        log?.trace(msg)
+        log?.trace("$tag $msg")
     }
 
     override fun d(tag: String?, msg: String) {
-        log?.debug(msg)
+        log?.debug("$tag $msg")
     }
 
     override fun i(tag: String?, msg: String) {
-        log?.info(msg)
+        log?.info("$tag $msg")
     }
 
     override fun w(tag: String?, msg: String) {
-        log?.warn(msg)
+        log?.warn("$tag $msg")
     }
 
     override fun e(tag: String?, msg: String) {
-        log?.error(msg)
+        log?.error("$tag $msg")
     }
 
     override fun destroy() {
@@ -52,15 +57,31 @@ class LogbackImpl : ILog {
     private fun configureLogbackDirectly(dir: String?) {
         val lc = LoggerFactory.getILoggerFactory() as LoggerContext
         lc.stop()
-        val appender = if (usedb) {
-            SQLiteAppender().apply {
+        val root = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger
+        root.level = Level.TRACE
+        if (logcat) {
+            root.addAppender(LogcatAppender().apply {
+                val logcatEncoder = PatternLayoutEncoder()
+                logcatEncoder.context = lc
+                logcatEncoder.pattern = "[%thread] %-5level %logger{35} - %msg%n"
+                logcatEncoder.start()
+                context = lc
+                encoder = logcatEncoder
+                start()
+            })
+            val logcatAppender = LogcatAppender()
+            root.addAppender(logcatAppender)
+        }
+        if (db) {
+            root.addAppender(SQLiteAppender().apply {
                 filename = dir + File.separatorChar + "logback.db"
                 start()
-            }
-        } else {
-            RollingFileAppender<ILoggingEvent>().apply {
+            })
+        }
+        if (file) {
+            root.addAppender(RollingFileAppender<ILoggingEvent>().apply {
                 isAppend = true
-                setContext(lc)
+                context = lc
                 val rollingPolicy = TimeBasedRollingPolicy<ILoggingEvent>()
                 rollingPolicy.fileNamePattern = dir + File.separatorChar + "%d{yyyy-MM, aux}/%d.log"
                 rollingPolicy.maxHistory = 31
@@ -68,18 +89,14 @@ class LogbackImpl : ILog {
                 rollingPolicy.context = lc
                 rollingPolicy.start()
                 setRollingPolicy(rollingPolicy)
-
                 val encoder = PatternLayoutEncoder()
                 encoder.pattern = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n"
                 encoder.context = lc
                 encoder.start()
                 setEncoder(encoder)
                 start()
-            }
+            })
         }
-        val root = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger
-        root.level = Level.TRACE
-        root.addAppender(appender)
         StatusPrinter.print(lc)
     }
 

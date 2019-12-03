@@ -20,23 +20,23 @@ class LoggerImpl : ILog {
     }
 
     override fun v(tag: String?, msg: String) {
-        Logger.v(msg)
+        Logger.t(tag).v(msg)
     }
 
     override fun d(tag: String?, msg: String) {
-        Logger.d(msg)
+        Logger.t(tag).d(msg)
     }
 
     override fun i(tag: String?, msg: String) {
-        Logger.i(msg)
+        Logger.t(tag).i(msg)
     }
 
     override fun w(tag: String?, msg: String) {
-        Logger.w(msg)
+        Logger.t(tag).w(msg)
     }
 
     override fun e(tag: String?, msg: String) {
-        Logger.e(msg)
+        Logger.t(tag).e(msg)
     }
 
     override fun destroy() {

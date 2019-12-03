@@ -6,13 +6,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.shengshijie.log.HLog
-import com.shengshijie.log.LogbackImpl
+import com.shengshijie.log.XLogImpl
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.EasyPermissions.PermissionCallbacks
 import pub.devrel.easypermissions.EasyPermissions.RationaleCallbacks
-import timber.log.Timber
 import kotlin.concurrent.thread
 
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        HLog.setLogImpl(LogbackImpl().apply { usedb = false })
+        HLog.setLogImpl(XLogImpl())
         HLog.init(application, getExternalFilesDir(null)?.absolutePath, "RFT")
         logTask()
     }
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     fun test(view: View) {
         thread {
             for (i in 1..3) {
-                Timber.i("init")
+                HLog.v("AA", "AAA")
             }
         }
     }

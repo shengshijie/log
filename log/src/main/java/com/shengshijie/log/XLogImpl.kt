@@ -9,8 +9,8 @@ class XLogImpl : ILog {
     override fun init(context: Context, dir: String?, tag: String?) {
         System.loadLibrary("c++_shared")
         System.loadLibrary("marsxlog")
-        Xlog.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, dir, dir, tag, 31, "")
-        Xlog.setConsoleLogOpen(false)
+        Xlog.appenderOpen(Xlog.LEVEL_ALL, Xlog.AppednerModeAsync, dir, dir, tag, 31, "")
+        Xlog.setConsoleLogOpen(true)
         Log.setLogImp(Xlog())
     }
 
