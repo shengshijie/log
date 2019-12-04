@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.shengshijie.log.HLog
-import com.shengshijie.log.XLogImpl
+import com.shengshijie.log.LogbackImpl
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -21,15 +21,23 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        HLog.setLogImpl(XLogImpl())
+        HLog.setLogImpl(LogbackImpl().apply {
+            file = true
+            db = true
+            socket = true
+            socketHost = ""
+            socketPort = 0
+        })
         HLog.init(application, getExternalFilesDir(null)?.absolutePath, "RFT")
         logTask()
     }
 
     fun test(view: View) {
         thread {
-            for (i in 1..3) {
-                HLog.v("AA", "AAA")
+            for (i in 1..11) {
+                HLog.v("VV", "VVVV")
+                HLog.d("DD", "DDD")
+                HLog.e("EE", "EEE")
             }
         }
     }
