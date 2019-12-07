@@ -3,6 +3,7 @@ package com.shengshijie.log
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.os.Build
+import android.os.Debug
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -11,12 +12,15 @@ import java.util.*
 
 internal object CrashUtils {
 
-    fun init(context: Context,  dir: String?, f: ((Throwable) -> Unit)?) {
+    fun init(context: Context, dir: String?, f: ((Throwable) -> Unit)?) {
         val pi: PackageInfo = context.packageManager
             .getPackageInfo(context.packageName, 0)
         val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
         val exceptionHandler = Thread.UncaughtExceptionHandler { t, e ->
-            val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(Date(System.currentTimeMillis()))
+            val time = SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                Locale.CHINA
+            ).format(Date(System.currentTimeMillis()))
             val sb = StringBuilder()
             sb.appendln()
                 .appendln("**************************************************")
@@ -40,6 +44,7 @@ internal object CrashUtils {
             pw.flush()
             sb.append(sw.toString())
             val crashInfo = sb.toString()
+            Debug.dumpHprofData(File(dir, "/memory.hprof").absolutePath)
             File(dir, "crash $time.txt").writeText(crashInfo)
             f?.invoke(e)
             uncaughtExceptionHandler?.uncaughtException(t, e)

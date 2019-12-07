@@ -15,13 +15,11 @@ import ch.qos.logback.core.util.Duration
 import ch.qos.logback.core.util.StatusPrinter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.slf4j.MarkerFactory
 import java.io.File
 
 
 class LogbackImpl : ILog {
 
-    private var log: Logger? = null
 
     var logcat: Boolean = true
 
@@ -37,27 +35,26 @@ class LogbackImpl : ILog {
 
     override fun init(context: Context, dir: String?, tag: String?) {
         configureLogbackDirectly(dir)
-        log = LoggerFactory.getLogger(tag)
     }
 
     override fun v(tag: String?, msg: String) {
-        log?.trace(msg, tag)
+        LoggerFactory.getLogger(tag)?.trace(msg)
     }
 
     override fun d(tag: String?, msg: String) {
-        log?.debug(msg, tag)
+        LoggerFactory.getLogger(tag)?.debug(msg)
     }
 
     override fun i(tag: String?, msg: String) {
-        log?.info(msg, tag)
+        LoggerFactory.getLogger(tag)?.info(msg)
     }
 
     override fun w(tag: String?, msg: String) {
-        log?.warn(msg, tag)
+        LoggerFactory.getLogger(tag)?.warn(msg)
     }
 
     override fun e(tag: String?, msg: String) {
-        log?.error(MarkerFactory.getMarker("NOTIFY_ADMIN"), msg, tag)
+        LoggerFactory.getLogger(tag)?.error(msg)
     }
 
     override fun destroy() {

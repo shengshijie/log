@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
             file = true
             db = true
             socket = true
-            socketHost = ""
-            socketPort = 0
+            socketHost = BuildConfig.HOST
+            socketPort = BuildConfig.PORT
         })
         HLog.init(application, getExternalFilesDir(null)?.absolutePath, "RFT")
         logTask()
@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     fun test(view: View) {
         thread {
             for (i in 1..11) {
-                HLog.v("VV", "VVVV")
-                HLog.d("DD", "DDD")
-                HLog.e("EE", "EEE")
+                HLog.v("VV1", "VVVV")
+                HLog.d("DD2", "DDD")
+                HLog.e("EE3", "EEE")
             }
         }
     }
