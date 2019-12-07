@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.shengshijie.log.HLog
-import com.shengshijie.log.LogbackImpl
+import com.shengshijie.log.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.EasyPermissions.PermissionCallbacks
 import pub.devrel.easypermissions.EasyPermissions.RationaleCallbacks
 import kotlin.concurrent.thread
-
 
 class MainActivity : AppCompatActivity(), PermissionCallbacks,
     RationaleCallbacks {
@@ -35,9 +33,9 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     fun test(view: View) {
         thread {
             for (i in 1..11) {
-                HLog.v("VV1", "VVVV")
-                HLog.d("DD2", "DDD")
-                HLog.e("EE3", "EEE")
+                HLog.verbose("FFF",DVC)
+                HLog.debug("DDD",CRS)
+                HLog.error("EEE",DBG)
             }
         }
     }

@@ -8,65 +8,65 @@ object HLog : ILog {
 
     private var log: ILog = LogbackImpl()
 
-    private var tag: String? = "TAG"
+    private var mTag: String = ""
 
     fun setLogImpl(log: ILog) {
         this.log = log
     }
 
     override fun init(context: Context, dir: String?, tag: String?) {
-        this.tag = tag
+        this.mTag = tag ?: ""
         CrashUtils.init(context, dir, null)
         log.init(context, dir, tag)
     }
 
-    fun v(msg: String) {
-        v(tag, msg)
+    fun verbose(msg: String, logType: LogType = DBG) {
+        v("<${logType.name()}>", msg)
     }
 
-    fun d(msg: String) {
-        d(tag, msg)
+    fun debug(msg: String, logType: LogType = DBG) {
+        d("<${logType.name()}>", msg)
     }
 
-    fun i(msg: String) {
-        i(tag, msg)
+    fun info(msg: String, logType: LogType = DBG) {
+        i("<${logType.name()}>", msg)
     }
 
-    fun w(msg: String) {
-        w(tag, msg)
+    fun warn(msg: String, logType: LogType = DBG) {
+        w("<${logType.name()}>", msg)
     }
 
-    fun e(msg: String) {
-        e(tag, msg)
+    fun error(msg: String, logType: LogType = DBG) {
+        e("<${logType.name()}>", msg)
     }
 
-    fun str(any: Any) {
-        str(tag, any)
+    fun string(any: Any, logType: LogType = DBG) {
+        s("<${logType.name()}>", any)
     }
 
-    fun json(msg: String) {
-        json(tag, msg)
+    fun json(msg: String, logType: LogType = DBG) {
+        j("<${logType.name()}>", msg)
     }
 
-    fun xml(msg: String) {
-        xml(tag, msg)
+    fun xml(msg: String, logType: LogType = DBG) {
+        x("<${logType.name()}>", msg)
     }
 
-    fun str(tag: String?, any: Any) {
+    fun s(tag: String?, any: Any) {
         if (loggable) {
-            log.v(tag, Utils.toString(any))
+            log.d(tag, Utils.toString(any))
         }
     }
 
-    fun json(tag: String?, msg: String) {
+    fun j(tag: String?, msg: String) {
         if (loggable) {
-            log.v(tag, Utils.json(msg))
+            log.d(tag, Utils.json(msg))
         }
     }
 
-    fun xml(tag: String?, msg: String) {
+    fun x(tag: String?, msg: String) {
         if (loggable) {
-            log.v(tag, Utils.xml(msg))
+            log.d(tag, Utils.xml(msg))
         }
     }
 
