@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
             file = true
             db = true
             socket = true
-            socketHost = BuildConfig.HOST
-            socketPort = BuildConfig.PORT
+            socketHost = ""
+            socketPort = 0
         })
         HLog.init(application, getExternalFilesDir(null)?.absolutePath, "RFT")
         logTask()
