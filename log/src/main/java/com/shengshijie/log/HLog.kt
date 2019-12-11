@@ -2,7 +2,7 @@ package com.shengshijie.log
 
 import android.content.Context
 
-object HLog : ILog {
+object HLog {
 
     var loggable: Boolean = true
 
@@ -14,93 +14,93 @@ object HLog : ILog {
         this.log = log
     }
 
-    override fun init(context: Context, dir: String?, tag: String?) {
+    fun init(context: Context, dir: String?, tag: String?) {
         this.mTag = tag ?: ""
         CrashUtils.init(context, dir, null)
         log.init(context, dir, tag)
     }
 
-    fun verbose(msg: String, logType: LogType = DBG) {
-        v("<${logType.name()}>", msg)
+    fun v(msg: String?, logType: LogType = DBG) {
+        v("<${logType.name()}>", msg ?: "null")
     }
 
-    fun debug(msg: String, logType: LogType = DBG) {
-        d("<${logType.name()}>", msg)
+    fun d(msg: String?, logType: LogType = DBG) {
+        d("<${logType.name()}>", msg ?: "null")
     }
 
-    fun info(msg: String, logType: LogType = DBG) {
-        i("<${logType.name()}>", msg)
+    fun i(msg: String?, logType: LogType = DBG) {
+        i("<${logType.name()}>", msg ?: "null")
     }
 
-    fun warn(msg: String, logType: LogType = DBG) {
-        w("<${logType.name()}>", msg)
+    fun w(msg: String?, logType: LogType = DBG) {
+        w("<${logType.name()}>", msg ?: "null")
     }
 
-    fun error(msg: String, logType: LogType = DBG) {
-        e("<${logType.name()}>", msg)
+    fun e(msg: String?, logType: LogType = DBG) {
+        e("<${logType.name()}>", msg ?: "null")
     }
 
-    fun string(any: Any, logType: LogType = DBG) {
-        s("<${logType.name()}>", any)
+    fun s(any: Any?, logType: LogType = DBG) {
+        s("<${logType.name()}>", any ?: "null")
     }
 
-    fun json(msg: String, logType: LogType = DBG) {
-        j("<${logType.name()}>", msg)
+    fun j(msg: String?, logType: LogType = DBG) {
+        j("<${logType.name()}>", msg ?: "null")
     }
 
-    fun xml(msg: String, logType: LogType = DBG) {
-        x("<${logType.name()}>", msg)
+    fun x(msg: String?, logType: LogType = DBG) {
+        x("<${logType.name()}>", msg ?: "null")
     }
 
-    fun s(tag: String?, any: Any) {
+    fun s(tag: String?, any: Any?) {
         if (loggable) {
             log.d(tag, Utils.toString(any))
         }
     }
 
-    fun j(tag: String?, msg: String) {
+    fun j(tag: String?, msg: String?) {
         if (loggable) {
             log.d(tag, Utils.json(msg))
         }
     }
 
-    fun x(tag: String?, msg: String) {
+    fun x(tag: String?, msg: String?) {
         if (loggable) {
             log.d(tag, Utils.xml(msg))
         }
     }
 
-    override fun v(tag: String?, msg: String) {
+    fun v(tag: String?, msg: String?) {
         if (loggable) {
-            log.v(tag, msg)
+            log.v(tag, msg ?: "null")
         }
     }
 
-    override fun d(tag: String?, msg: String) {
+    fun d(tag: String?, msg: String?) {
         if (loggable) {
-            log.d(tag, msg)
+            log.d(tag, msg ?: "null")
         }
     }
 
-    override fun i(tag: String?, msg: String) {
+    fun i(tag: String?, msg: String?) {
         if (loggable) {
-            log.i(tag, msg)
+            log.i(tag, msg ?: "null")
         }
     }
 
-    override fun w(tag: String?, msg: String) {
+    fun w(tag: String?, msg: String?) {
         if (loggable) {
-            log.w(tag, msg)
+            log.w(tag, msg ?: "null")
         }
     }
 
-    override fun e(tag: String?, msg: String) {
+    fun e(tag: String?, msg: String?) {
         if (loggable) {
-            log.e(tag, msg)
+            log.e(tag, msg ?: "null")
         }
     }
 
-    override fun destroy() {
+    fun destroy() {
         log.destroy()
     }
 

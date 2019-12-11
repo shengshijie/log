@@ -33,9 +33,9 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     fun test(view: View) {
         thread {
             for (i in 1..11) {
-                HLog.verbose("FFF",DVC)
-                HLog.debug("DDD",CRS)
-                HLog.error("EEE",DBG)
+                HLog.v("DD","FFF")
+                HLog.d("DDD")
+                HLog.e(null)
             }
         }
     }

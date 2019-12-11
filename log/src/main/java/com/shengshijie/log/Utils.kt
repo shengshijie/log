@@ -52,8 +52,11 @@ object Utils {
     }
 
     fun json(json: String?): String {
-        if (json.isNullOrEmpty()) {
-            return ("Empty/Null json content")
+        if (json == null) {
+            return ("null json")
+        }
+        if (json.isEmpty()) {
+            return ("empty json")
         }
         try {
             json.trim { it <= ' ' }
@@ -72,8 +75,11 @@ object Utils {
     }
 
     fun xml(xml: String?): String {
-        if (xml.isNullOrEmpty()) {
-            return ("Empty/Null xml content")
+        if (xml == null) {
+            return ("null xml")
+        }
+        if (xml.isEmpty()) {
+            return ("empty xml")
         }
         return try {
             val xmlInput: Source = StreamSource(StringReader(xml))
