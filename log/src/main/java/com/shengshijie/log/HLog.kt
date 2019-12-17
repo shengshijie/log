@@ -52,6 +52,16 @@ object HLog {
         x("<${logType.name()}>", msg ?: "null")
     }
 
+    fun e(thr: Throwable, logType: LogType = DBG) {
+        e("<${logType.name()}>", thr)
+    }
+
+    fun e(tag: String?, thr: Throwable?) {
+        if (loggable) {
+            log.e(tag, Utils.ex(thr))
+        }
+    }
+
     fun s(tag: String?, any: Any?) {
         if (loggable) {
             log.d(tag, Utils.toString(any))

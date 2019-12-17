@@ -3,8 +3,10 @@ package com.shengshijie.log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.PrintWriter
 import java.io.StringReader
 import java.io.StringWriter
+import java.net.UnknownHostException
 import java.util.*
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.Source
@@ -92,6 +94,24 @@ object Utils {
         } catch (e: TransformerException) {
             "Invalid xml"
         }
+    }
+
+    fun ex(tr: Throwable?): String{
+        if (tr == null) {
+            return ""
+        }
+        var t = tr
+        while (t != null) {
+            if (t is UnknownHostException) {
+                return ""
+            }
+            t = t.cause
+        }
+        val sw = StringWriter()
+        val pw = PrintWriter(sw)
+        tr.printStackTrace(pw)
+        pw.flush()
+        return sw.toString()
     }
 
 }
