@@ -1,5 +1,6 @@
 package com.shengshijie.log
 
+import android.os.Build
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -96,7 +97,7 @@ object Utils {
         }
     }
 
-    fun ex(tr: Throwable?): String{
+    fun ex(tr: Throwable?): String {
         if (tr == null) {
             return ""
         }
@@ -112,6 +113,18 @@ object Utils {
         tr.printStackTrace(pw)
         pw.flush()
         return sw.toString()
+    }
+
+    fun getCallerName(): String {
+        return try {
+            val tag = Throwable().stackTrace[3].fileName
+            val line = Throwable().stackTrace[3].lineNumber
+            if (tag.length <= 23 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                "($tag:$line)"
+            } else "(${tag.substring(0, 23)}:$line)"
+        } catch (e: Exception) {
+            ""
+        }
     }
 
 }

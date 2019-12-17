@@ -2,7 +2,7 @@ package com.shengshijie.log
 
 sealed class LogType {
 
-    fun name(): String {
+    override fun toString(): String {
         return javaClass.simpleName
     }
 

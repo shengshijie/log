@@ -20,93 +20,125 @@ object HLog {
         log.init(context, dir, tag)
     }
 
-    fun v(msg: String?, logType: LogType = DBG) {
-        v("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun d(msg: String?, logType: LogType = DBG) {
-        d("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun i(msg: String?, logType: LogType = DBG) {
-        i("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun w(msg: String?, logType: LogType = DBG) {
-        w("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun e(msg: String?, logType: LogType = DBG) {
-        e("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun s(any: Any?, logType: LogType = DBG) {
-        s("<${logType.name()}>", any ?: "null")
-    }
-
-    fun j(msg: String?, logType: LogType = DBG) {
-        j("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun x(msg: String?, logType: LogType = DBG) {
-        x("<${logType.name()}>", msg ?: "null")
-    }
-
-    fun e(thr: Throwable, logType: LogType = DBG) {
-        e("<${logType.name()}>", thr)
-    }
-
-    fun e(tag: String?, thr: Throwable?) {
+    fun e(thr: Throwable) {
         if (loggable) {
-            log.e(tag, Utils.ex(thr))
+            log.e(getTag(null), Utils.ex(thr))
         }
     }
 
-    fun s(tag: String?, any: Any?) {
+    fun s(any: Any?) {
         if (loggable) {
-            log.d(tag, Utils.toString(any))
+            log.d(getTag(null), Utils.toString(any))
         }
     }
 
-    fun j(tag: String?, msg: String?) {
+    fun j(msg: String?) {
         if (loggable) {
-            log.d(tag, Utils.json(msg))
+            log.d(getTag(null), Utils.json(msg))
         }
     }
 
-    fun x(tag: String?, msg: String?) {
+    fun x(msg: String?) {
         if (loggable) {
-            log.d(tag, Utils.xml(msg))
+            log.d(getTag(null), Utils.xml(msg))
         }
     }
 
-    fun v(tag: String?, msg: String?) {
+    fun v(msg: String?) {
         if (loggable) {
-            log.v(tag, msg ?: "null")
+            log.v(getTag(null), msg ?: "null")
         }
     }
 
-    fun d(tag: String?, msg: String?) {
+    fun d(msg: String?) {
         if (loggable) {
-            log.d(tag, msg ?: "null")
+            log.d(getTag(null), msg ?: "null")
         }
     }
 
-    fun i(tag: String?, msg: String?) {
+    fun i(msg: String?) {
         if (loggable) {
-            log.i(tag, msg ?: "null")
+            log.i(getTag(null), msg ?: "null")
         }
     }
 
-    fun w(tag: String?, msg: String?) {
+    fun w(msg: String?) {
         if (loggable) {
-            log.w(tag, msg ?: "null")
+            log.w(getTag(null), msg ?: "null")
         }
     }
 
-    fun e(tag: String?, msg: String?) {
+    fun e(msg: String?) {
         if (loggable) {
-            log.e(tag, msg ?: "null")
+            log.e(getTag(null), msg ?: "null")
+        }
+    }
+
+    fun e(thr: Throwable, tag: Any) {
+        if (loggable) {
+            log.e(getTag(tag), Utils.ex(thr))
+        }
+    }
+
+    fun s(any: Any?, tag: Any) {
+        if (loggable) {
+            log.d(getTag(tag), Utils.toString(any))
+        }
+    }
+
+    fun j(msg: String?, tag: Any) {
+        if (loggable) {
+            log.d(getTag(tag), Utils.json(msg))
+        }
+    }
+
+    fun x(msg: String?, tag: Any) {
+        if (loggable) {
+            log.d(getTag(tag), Utils.xml(msg))
+        }
+    }
+
+    fun v(msg: String?, tag: Any) {
+        if (loggable) {
+            log.v(getTag(tag), msg ?: "null")
+        }
+    }
+
+    fun d(msg: String?, tag: Any) {
+        if (loggable) {
+            log.d(getTag(tag), msg ?: "null")
+        }
+    }
+
+    fun i(msg: String?, tag: Any) {
+        if (loggable) {
+            log.i(getTag(tag), msg ?: "null")
+        }
+    }
+
+    fun w(msg: String?, tag: Any) {
+        if (loggable) {
+            log.w(getTag(tag), msg ?: "null")
+        }
+    }
+
+    fun e(msg: String?, tag: Any) {
+        if (loggable) {
+            log.e(getTag(tag), msg ?: "null")
+        }
+    }
+
+    private fun getTag(tag: Any?): String {
+        if (tag == null) {
+            return "<DEBUG> ${Utils.getCallerName()}"
+        }
+        return when (tag) {
+            is String -> {
+                "<${tag}> ${Utils.getCallerName()}"
+            }
+            else -> {
+                "<${tag.javaClass.simpleName}> ${Utils.getCallerName()}"
+            }
         }
     }
 
