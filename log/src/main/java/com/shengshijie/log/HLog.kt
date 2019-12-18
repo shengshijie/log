@@ -1,12 +1,20 @@
 package com.shengshijie.log
 
 import android.content.Context
+import android.util.Log
 
 object HLog {
 
     private var mLoggable: Boolean = true
 
+    private var mDepth: Int = 3
+
     private var mLog: ILog = LogbackImpl()
+
+    @JvmStatic
+    fun setDepth(depth: Int) {
+        mDepth = depth
+    }
 
     @JvmStatic
     fun setLoggable(loggable: Boolean) {
@@ -150,16 +158,39 @@ object HLog {
         }
     }
 
+    @JvmStatic
+    fun log(level: Int, msg: String?, tag: Any) {
+        if (mLoggable) {
+            when (level) {
+                Log.VERBOSE -> {
+                    mLog.v(getTag(tag), msg ?: "null")
+                }
+                Log.DEBUG -> {
+                    mLog.d(getTag(tag), msg ?: "null")
+                }
+                Log.INFO -> {
+                    mLog.i(getTag(tag), msg ?: "null")
+                }
+                Log.WARN -> {
+                    mLog.w(getTag(tag), msg ?: "null")
+                }
+                Log.ERROR -> {
+                    mLog.e(getTag(tag), msg ?: "null")
+                }
+            }
+        }
+    }
+
     private fun getTag(tag: Any?): String {
         if (tag == null) {
-            return "<DEBUG> ${Utils.getCallerName()}"
+            return "<DEBUG> ${Utils.getCallerName(mDepth)}"
         }
         return when (tag) {
             is String -> {
-                "<${tag}> ${Utils.getCallerName()}"
+                "<${tag}> ${Utils.getCallerName(mDepth)}"
             }
             else -> {
-                "<${tag.javaClass.simpleName}> ${Utils.getCallerName()}"
+                "<${tag.javaClass.simpleName}> ${Utils.getCallerName(mDepth)}"
             }
         }
     }

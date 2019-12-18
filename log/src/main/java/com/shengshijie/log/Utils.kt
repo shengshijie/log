@@ -115,10 +115,10 @@ object Utils {
         return sw.toString()
     }
 
-    fun getCallerName(): String {
+    fun getCallerName(depth:Int): String {
         return try {
-            val tag = Throwable().stackTrace[3].fileName
-            val line = Throwable().stackTrace[3].lineNumber
+            val tag = Throwable().stackTrace[depth].fileName
+            val line = Throwable().stackTrace[depth].lineNumber
             if (tag.length <= 23 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 "($tag:$line)"
             } else "(${tag.substring(0, 23)}:$line)"
