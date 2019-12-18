@@ -4,127 +4,149 @@ import android.content.Context
 
 object HLog {
 
-    var loggable: Boolean = true
+    private var mLoggable: Boolean = true
 
-    private var log: ILog = LogbackImpl()
+    private var mLog: ILog = LogbackImpl()
 
-    private var mTag: String = ""
+    @JvmStatic
+    fun setLoggable(loggable: Boolean) {
+        mLoggable = loggable
+    }
 
+    @JvmStatic
     fun setLogImpl(log: ILog) {
-        this.log = log
+        this.mLog = log
     }
 
-    fun init(context: Context, dir: String?, tag: String?) {
-        this.mTag = tag ?: ""
-        CrashUtils.init(context, dir, null)
-        log.init(context, dir, tag)
+    @JvmStatic
+    fun init(context: Context, name: String?, dir: String? = null) {
+        dir?.apply { CrashUtils.init(context, this, null) }
+        mLog.init(context, dir, name)
     }
 
+    @JvmStatic
     fun e(thr: Throwable) {
-        if (loggable) {
-            log.e(getTag(null), Utils.ex(thr))
+        if (mLoggable) {
+            mLog.e(getTag(null), Utils.ex(thr))
         }
     }
 
+    @JvmStatic
     fun s(any: Any?) {
-        if (loggable) {
-            log.d(getTag(null), Utils.toString(any))
+        if (mLoggable) {
+            mLog.d(getTag(null), Utils.toString(any))
         }
     }
 
+    @JvmStatic
     fun j(msg: String?) {
-        if (loggable) {
-            log.d(getTag(null), Utils.json(msg))
+        if (mLoggable) {
+            mLog.d(getTag(null), Utils.json(msg))
         }
     }
 
+    @JvmStatic
     fun x(msg: String?) {
-        if (loggable) {
-            log.d(getTag(null), Utils.xml(msg))
+        if (mLoggable) {
+            mLog.d(getTag(null), Utils.xml(msg))
         }
     }
 
+    @JvmStatic
     fun v(msg: String?) {
-        if (loggable) {
-            log.v(getTag(null), msg ?: "null")
+        if (mLoggable) {
+            mLog.v(getTag(null), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun d(msg: String?) {
-        if (loggable) {
-            log.d(getTag(null), msg ?: "null")
+        if (mLoggable) {
+            mLog.d(getTag(null), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun i(msg: String?) {
-        if (loggable) {
-            log.i(getTag(null), msg ?: "null")
+        if (mLoggable) {
+            mLog.i(getTag(null), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun w(msg: String?) {
-        if (loggable) {
-            log.w(getTag(null), msg ?: "null")
+        if (mLoggable) {
+            mLog.w(getTag(null), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun e(msg: String?) {
-        if (loggable) {
-            log.e(getTag(null), msg ?: "null")
+        if (mLoggable) {
+            mLog.e(getTag(null), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun e(thr: Throwable, tag: Any) {
-        if (loggable) {
-            log.e(getTag(tag), Utils.ex(thr))
+        if (mLoggable) {
+            mLog.e(getTag(tag), Utils.ex(thr))
         }
     }
 
+    @JvmStatic
     fun s(any: Any?, tag: Any) {
-        if (loggable) {
-            log.d(getTag(tag), Utils.toString(any))
+        if (mLoggable) {
+            mLog.d(getTag(tag), Utils.toString(any))
         }
     }
 
+    @JvmStatic
     fun j(msg: String?, tag: Any) {
-        if (loggable) {
-            log.d(getTag(tag), Utils.json(msg))
+        if (mLoggable) {
+            mLog.d(getTag(tag), Utils.json(msg))
         }
     }
 
+    @JvmStatic
     fun x(msg: String?, tag: Any) {
-        if (loggable) {
-            log.d(getTag(tag), Utils.xml(msg))
+        if (mLoggable) {
+            mLog.d(getTag(tag), Utils.xml(msg))
         }
     }
 
+    @JvmStatic
     fun v(msg: String?, tag: Any) {
-        if (loggable) {
-            log.v(getTag(tag), msg ?: "null")
+        if (mLoggable) {
+            mLog.v(getTag(tag), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun d(msg: String?, tag: Any) {
-        if (loggable) {
-            log.d(getTag(tag), msg ?: "null")
+        if (mLoggable) {
+            mLog.d(getTag(tag), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun i(msg: String?, tag: Any) {
-        if (loggable) {
-            log.i(getTag(tag), msg ?: "null")
+        if (mLoggable) {
+            mLog.i(getTag(tag), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun w(msg: String?, tag: Any) {
-        if (loggable) {
-            log.w(getTag(tag), msg ?: "null")
+        if (mLoggable) {
+            mLog.w(getTag(tag), msg ?: "null")
         }
     }
 
+    @JvmStatic
     fun e(msg: String?, tag: Any) {
-        if (loggable) {
-            log.e(getTag(tag), msg ?: "null")
+        if (mLoggable) {
+            mLog.e(getTag(tag), msg ?: "null")
         }
     }
 
@@ -143,7 +165,7 @@ object HLog {
     }
 
     fun destroy() {
-        log.destroy()
+        mLog.destroy()
     }
 
 }

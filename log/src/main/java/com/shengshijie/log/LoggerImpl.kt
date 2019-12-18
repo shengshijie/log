@@ -5,12 +5,12 @@ import com.orhanobut.logger.*
 
 class LoggerImpl : ILog {
 
-    override fun init(context: Context, dir: String?, tag: String?) {
+    override fun init(context: Context, dir: String?, name: String?) {
         val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
             .showThreadInfo(BuildConfig.DEBUG)
             .methodCount(if (BuildConfig.DEBUG) 1 else 0)
             .methodOffset(5)
-            .tag(tag)
+            .tag(name)
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
 //        val diskFormatStrategy: FormatStrategy = CsvFormatStrategy.newBuilder()

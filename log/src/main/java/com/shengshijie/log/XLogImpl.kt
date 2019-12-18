@@ -6,10 +6,20 @@ import com.tencent.mars.xlog.Xlog
 
 class XLogImpl : ILog {
 
-    override fun init(context: Context, dir: String?, tag: String?) {
+    override fun init(context: Context, dir: String?, name: String?) {
         System.loadLibrary("c++_shared")
         System.loadLibrary("marsxlog")
-        Xlog.appenderOpen(Xlog.LEVEL_ALL, Xlog.AppednerModeAsync, dir, dir, tag, 31, "")
+        dir?.apply {
+            Xlog.appenderOpen(
+                Xlog.LEVEL_ALL,
+                Xlog.AppednerModeAsync,
+                this,
+                this,
+                name,
+                31,
+                ""
+            )
+        }
         Xlog.setConsoleLogOpen(true)
         Log.setLogImp(Xlog())
     }

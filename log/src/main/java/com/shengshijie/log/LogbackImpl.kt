@@ -17,9 +17,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 
-
 class LogbackImpl : ILog {
-
 
     var logcat: Boolean = true
 
@@ -33,7 +31,7 @@ class LogbackImpl : ILog {
 
     var socketPort: Int = 0
 
-    override fun init(context: Context, dir: String?, tag: String?) {
+    override fun init(context: Context, dir: String?, name: String?) {
         configureLogbackDirectly(dir)
     }
 
@@ -77,14 +75,14 @@ class LogbackImpl : ILog {
                     start()
                 })
             }
-            if (db) {
+            if (dir != null && db) {
                 addAppender(SQLiteAppender().apply {
                     maxHistory = "31 days"
                     filename = dir + File.separatorChar + "logback.db"
                     start()
                 })
             }
-            if (file) {
+            if (dir != null && file) {
                 addAppender(RollingFileAppender<ILoggingEvent>().apply fileAppender@{
                     isAppend = true
                     context = lc
