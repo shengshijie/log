@@ -9,7 +9,7 @@ object HLog {
 
     private var mDepth: Int = 3
 
-    private var mLog: ILog = LogbackImpl()
+    private var mLog: ILog = LogcatImpl()
 
     @JvmStatic
     fun setDepth(depth: Int) {
