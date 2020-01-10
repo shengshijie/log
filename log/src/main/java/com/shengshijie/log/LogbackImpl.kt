@@ -7,10 +7,13 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.android.LogcatAppender
 import ch.qos.logback.classic.android.SQLiteAppender
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import ch.qos.logback.classic.filter.LevelFilter
+import ch.qos.logback.classic.filter.ThresholdFilter
 import ch.qos.logback.classic.net.SocketAppender
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
+import ch.qos.logback.core.spi.FilterReply
 import ch.qos.logback.core.util.Duration
 import ch.qos.logback.core.util.StatusPrinter
 import org.slf4j.Logger
@@ -63,7 +66,7 @@ class LogbackImpl : ILog {
         val lc = LoggerFactory.getILoggerFactory() as LoggerContext
         lc.stop()
         (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).apply {
-            level = Level.TRACE
+            level = Level.ALL
             if (logcat) {
                 addAppender(LogcatAppender().apply {
                     context = lc
@@ -101,28 +104,6 @@ class LogbackImpl : ILog {
                     start()
                 })
             }
-//            if (eamil) {
-//                addAppender(SMTPAppender().apply {
-//                    setEvaluator(OnMarkerEvaluator().apply {
-//                        addMarker("NOTIFY_ADMIN")
-//                    })
-//                    cyclicBufferTracker = CyclicBufferTracker<ILoggingEvent>().apply {
-//                        bufferSize = 10
-//                    }
-//                    context = lc
-//                    isSSL = true
-//                    setSMTPHost("smtp.126.com")
-//                    setSMTPPort(25)
-//                    username = ""
-//                    password = ""
-//                    from = ""
-//                    addTo("")
-//                    subject = "%date{yyyyMMdd'T'HH:mm:ss.SSS}; %-5level; %msg"
-//                    layout = HTMLLayout()
-//                    start()
-//                })
-//            }
-//        }
             if (socket) {
                 val socketAppender = SocketAppender().apply {
                     context = lc

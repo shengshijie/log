@@ -31,12 +31,14 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     }
 
     fun test(view: View) {
+        HLog.setLevel(LogLevel.WARN)
         thread {
-            for (i in 1..11) {
-                HLog.d("DD",USR)
+            for (i in 1..1) {
+                HLog.v("VVV",USR)
                 HLog.d("DDD",this)
-                HLog.e(null,"DDD")
-                HLog.e("AAA")
+                HLog.i("III","DDD")
+                HLog.w("WWW")
+                HLog.e("EEE")
             }
         }
     }
