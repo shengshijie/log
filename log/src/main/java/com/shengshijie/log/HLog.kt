@@ -11,7 +11,7 @@ import com.shengshijie.log.LogLevel.WARN
 
 object HLog {
 
-    private var mDepth: Int = 3
+    private var mDepth: Int = 4
 
     private var mLog: ILog = LogcatImpl()
 
@@ -19,6 +19,9 @@ object HLog {
 
     @JvmStatic
     fun setDepth(depth: Int) {
+        if (mDepth <= 4) {
+            return
+        }
         mDepth = depth
     }
 
@@ -41,17 +44,9 @@ object HLog {
 
     @JvmStatic
     @JvmOverloads
-    fun e(thr: Throwable, tag: Any? = null) {
-        if (mLevel <= ERROR) {
-            mLog.e(getTag(tag), Utils.ex(thr))
-        }
-    }
-
-    @JvmStatic
-    @JvmOverloads
     fun s(any: Any?, tag: Any? = null) {
         if (mLevel <= DEBUG) {
-            mLog.d(getTag(tag), Utils.toString(any))
+            mLog.d(getTag(tag), getMessage(tag, Utils.toString(any)))
         }
     }
 
@@ -59,14 +54,14 @@ object HLog {
     @JvmOverloads
     fun j(msg: String?, tag: Any? = null) {
         if (mLevel <= DEBUG) {
-            mLog.d(getTag(tag), Utils.json(msg))
+            mLog.d(getTag(tag), getMessage(tag, Utils.json(msg)))
         }
     }
 
     @JvmStatic
     fun x(msg: String?, tag: Any? = null) {
         if (mLevel <= DEBUG) {
-            mLog.d(getTag(tag), Utils.xml(msg))
+            mLog.d(getTag(tag), getMessage(tag, Utils.xml(msg)))
         }
     }
 
@@ -74,7 +69,7 @@ object HLog {
     @JvmOverloads
     fun v(msg: String?, tag: Any? = null) {
         if (mLevel <= VERBOSE) {
-            mLog.v(getTag(tag), msg ?: "null")
+            mLog.v(getTag(tag), getMessage(tag, msg))
         }
     }
 
@@ -82,7 +77,7 @@ object HLog {
     @JvmOverloads
     fun d(msg: String?, tag: Any? = null) {
         if (mLevel <= DEBUG) {
-            mLog.d(getTag(tag), msg ?: "null")
+            mLog.d(getTag(tag), getMessage(tag, msg))
         }
     }
 
@@ -90,7 +85,7 @@ object HLog {
     @JvmOverloads
     fun i(msg: String?, tag: Any? = null) {
         if (mLevel <= INFO) {
-            mLog.i(getTag(tag), msg ?: "null")
+            mLog.i(getTag(tag), getMessage(tag, msg))
         }
     }
 
@@ -98,7 +93,7 @@ object HLog {
     @JvmOverloads
     fun w(msg: String?, tag: Any? = null) {
         if (mLevel <= WARN) {
-            mLog.w(getTag(tag), msg ?: "null")
+            mLog.w(getTag(tag), getMessage(tag, msg))
         }
     }
 
@@ -106,7 +101,15 @@ object HLog {
     @JvmOverloads
     fun e(msg: String?, tag: Any? = null) {
         if (mLevel <= ERROR) {
-            mLog.e(getTag(tag), msg ?: "null")
+            mLog.e(getTag(tag), getMessage(tag, msg))
+        }
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun e(thr: Throwable, tag: Any? = null) {
+        if (mLevel <= ERROR) {
+            mLog.e(getTag(tag), getMessage(tag, Utils.ex(thr)))
         }
     }
 
@@ -116,19 +119,19 @@ object HLog {
         if (mLevel <= level) {
             when (level) {
                 Log.VERBOSE -> {
-                    mLog.v(getTag(tag), msg ?: "null")
+                    mLog.v(getTag(tag), getMessage(tag, msg))
                 }
                 Log.DEBUG -> {
-                    mLog.d(getTag(tag), msg ?: "null")
+                    mLog.d(getTag(tag), getMessage(tag, msg))
                 }
                 Log.INFO -> {
-                    mLog.i(getTag(tag), msg ?: "null")
+                    mLog.i(getTag(tag), getMessage(tag, msg))
                 }
                 Log.WARN -> {
-                    mLog.w(getTag(tag), msg ?: "null")
+                    mLog.w(getTag(tag), getMessage(tag, msg))
                 }
                 Log.ERROR -> {
-                    mLog.e(getTag(tag), msg ?: "null")
+                    mLog.e(getTag(tag), getMessage(tag, msg))
                 }
             }
         }
@@ -142,16 +145,23 @@ object HLog {
     @JvmStatic
     fun getTag(tag: Any?): String {
         if (tag == null) {
-            return "<DEBUG> ${Utils.getCallerName(mDepth)}"
+            return "<${Utils.getCallerSimpleClassName(mDepth)}>"
         }
         return when (tag) {
             is String -> {
-                "<${tag}> ${Utils.getCallerName(mDepth)}"
+                "<${tag}>"
             }
             else -> {
-                "<${tag.javaClass.simpleName}> ${Utils.getCallerName(mDepth)}"
+                "<${tag.javaClass.simpleName}> "
             }
         }
+    }
+
+    private fun getMessage(tag: Any?, message: String?): String {
+        if (message == null) {
+            return "null"
+        }
+        return "${Utils.getCallerName(if (tag == null) mDepth else (mDepth - 1))} $message"
     }
 
 }

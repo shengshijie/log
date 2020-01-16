@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     }
 
     fun test(view: View) {
-        HLog.setLevel(LogLevel.WARN)
+        HLog.setLevel(LogLevel.DEBUG)
         thread {
             for (i in 1..1) {
                 HLog.v("VVV",USR)
@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
                 HLog.i("III","DDD")
                 HLog.w("WWW")
                 HLog.e("EEE")
+                HLog.log(6,"FFF")
+                HLog.s(view)
             }
         }
     }
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-
+//
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
@@ -72,11 +74,11 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     }
 
     override fun onRationaleDenied(requestCode: Int) {
-
+//
     }
 
     override fun onRationaleAccepted(requestCode: Int) {
-
+//
     }
 
     @AfterPermissionGranted(RC_STORAGE_PERM)

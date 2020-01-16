@@ -115,6 +115,14 @@ object Utils {
         return sw.toString()
     }
 
+    fun getCallerSimpleClassName(depth:Int): String {
+        return try {
+           Throwable().stackTrace[depth].fileName.removeSuffix(".kt").removeSuffix(".java")
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
     fun getCallerName(depth:Int): String {
         return try {
             val tag = Throwable().stackTrace[depth].fileName
