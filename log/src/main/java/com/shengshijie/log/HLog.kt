@@ -19,7 +19,7 @@ object HLog {
 
     @JvmStatic
     fun setDepth(depth: Int) {
-        if (mDepth <= 4) {
+        if (depth <= 4) {
             return
         }
         mDepth = depth
