@@ -12,7 +12,7 @@ import java.util.*
 
 internal object CrashUtils {
 
-    fun init(context: Context, dir: String?, f: ((Throwable) -> Unit)?) {
+    fun init(context: Context, dir: String?, onCrash: ((Throwable) -> Unit)?) {
         val pi: PackageInfo = context.packageManager
             .getPackageInfo(context.packageName, 0)
         val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
@@ -46,7 +46,7 @@ internal object CrashUtils {
             val crashInfo = sb.toString()
             Debug.dumpHprofData(File(dir, "/memory.hprof").absolutePath)
             File(dir, "crash $time.txt").writeText(crashInfo)
-            f?.invoke(e)
+            onCrash?.invoke(e)
             uncaughtExceptionHandler?.uncaughtException(t, e)
         }
         Thread.setDefaultUncaughtExceptionHandler(exceptionHandler)

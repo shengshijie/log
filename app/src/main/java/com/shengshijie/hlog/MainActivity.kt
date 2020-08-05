@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
                 HLog.log(6,"FFF")
                 HLog.s(view)
             }
+            throw RuntimeException("ha")
         }
     }
 

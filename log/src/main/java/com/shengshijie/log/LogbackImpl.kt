@@ -81,7 +81,7 @@ class LogbackImpl : ILog {
             if (dir != null && db) {
                 addAppender(SQLiteAppender().apply {
                     maxHistory = "31 days"
-                    filename = dir + File.separatorChar + "logback.db"
+                    filename = dir + File.separatorChar + "log.db"
                     start()
                 })
             }

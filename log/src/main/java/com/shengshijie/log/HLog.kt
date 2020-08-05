@@ -36,8 +36,13 @@ object HLog {
 
     @JvmStatic
     @JvmOverloads
-    fun init(context: Context, name: String?, dir: String? = null) {
-        dir?.apply { CrashUtils.init(context, this, null) }
+    fun init(
+        context: Context,
+        name: String? = "hLog",
+        dir: String? = context.getExternalFilesDir(null)?.absolutePath,
+        onCrash: ((Throwable) -> Unit)? = null
+    ) {
+        dir?.apply { CrashUtils.init(context, this, onCrash) }
         mLog.init(context, dir, name)
     }
 
