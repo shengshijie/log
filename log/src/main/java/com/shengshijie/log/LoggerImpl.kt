@@ -13,10 +13,10 @@ class LoggerImpl : ILog {
             .tag(name)
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
-//        val diskFormatStrategy: FormatStrategy = CsvFormatStrategy.newBuilder()
-//            .build()
-//        val diskLogAdapter = DiskLogAdapter(diskFormatStrategy)
-//        Logger.addLogAdapter(diskLogAdapter)
+        val diskFormatStrategy: FormatStrategy = CsvFormatStrategy.newBuilder()
+            .build()
+        val diskLogAdapter = DiskLogAdapter(diskFormatStrategy)
+        Logger.addLogAdapter(diskLogAdapter)
     }
 
     override fun v(tag: String?, msg: String) {

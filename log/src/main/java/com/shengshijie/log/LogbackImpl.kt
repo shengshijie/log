@@ -66,7 +66,7 @@ class LogbackImpl : ILog {
         val lc = LoggerFactory.getILoggerFactory() as LoggerContext
         lc.stop()
         (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).apply {
-            level = Level.ALL
+            level = HLog.getLevel().toLogBackLevel()
             if (logcat) {
                 addAppender(LogcatAppender().apply {
                     context = lc

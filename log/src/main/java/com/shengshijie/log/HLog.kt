@@ -2,12 +2,6 @@ package com.shengshijie.log
 
 import android.content.Context
 import android.util.Log
-import com.shengshijie.log.LogLevel.ALL
-import com.shengshijie.log.LogLevel.DEBUG
-import com.shengshijie.log.LogLevel.ERROR
-import com.shengshijie.log.LogLevel.INFO
-import com.shengshijie.log.LogLevel.VERBOSE
-import com.shengshijie.log.LogLevel.WARN
 
 object HLog {
 
@@ -15,7 +9,7 @@ object HLog {
 
     private var mLog: ILog = LogcatImpl()
 
-    private var mLevel: Int = ALL
+    private var mLevel: HLogLevel = HLogLevel.INFO
 
     @JvmStatic
     fun setDepth(depth: Int) {
@@ -31,8 +25,13 @@ object HLog {
     }
 
     @JvmStatic
-    fun setLevel(@LogLevel.Level level: Int) {
+    fun setLevel(level: HLogLevel) {
         mLevel = level
+    }
+
+    @JvmStatic
+    fun getLevel(): HLogLevel {
+        return mLevel
     }
 
     @JvmStatic
@@ -45,7 +44,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun s(any: Any?, tag: Any? = null) {
-        if (mLevel <= DEBUG) {
+        if (mLevel <= HLogLevel.DEBUG) {
             mLog.d(getTag(tag), getMessage(tag, Utils.toString(any)))
         }
     }
@@ -53,14 +52,14 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun j(msg: String?, tag: Any? = null) {
-        if (mLevel <= DEBUG) {
+        if (mLevel <= HLogLevel.DEBUG) {
             mLog.d(getTag(tag), getMessage(tag, Utils.json(msg)))
         }
     }
 
     @JvmStatic
     fun x(msg: String?, tag: Any? = null) {
-        if (mLevel <= DEBUG) {
+        if (mLevel <= HLogLevel.DEBUG) {
             mLog.d(getTag(tag), getMessage(tag, Utils.xml(msg)))
         }
     }
@@ -68,7 +67,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun v(msg: String?, tag: Any? = null) {
-        if (mLevel <= VERBOSE) {
+        if (mLevel <= HLogLevel.TRACE) {
             mLog.v(getTag(tag), getMessage(tag, msg))
         }
     }
@@ -76,7 +75,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun d(msg: String?, tag: Any? = null) {
-        if (mLevel <= DEBUG) {
+        if (mLevel <= HLogLevel.DEBUG) {
             mLog.d(getTag(tag), getMessage(tag, msg))
         }
     }
@@ -84,7 +83,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun i(msg: String?, tag: Any? = null) {
-        if (mLevel <= INFO) {
+        if (mLevel <= HLogLevel.INFO) {
             mLog.i(getTag(tag), getMessage(tag, msg))
         }
     }
@@ -92,7 +91,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun w(msg: String?, tag: Any? = null) {
-        if (mLevel <= WARN) {
+        if (mLevel <= HLogLevel.WARN) {
             mLog.w(getTag(tag), getMessage(tag, msg))
         }
     }
@@ -100,7 +99,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun e(msg: String?, tag: Any? = null) {
-        if (mLevel <= ERROR) {
+        if (mLevel <= HLogLevel.ERROR) {
             mLog.e(getTag(tag), getMessage(tag, msg))
         }
     }
@@ -108,7 +107,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun e(thr: Throwable, tag: Any? = null) {
-        if (mLevel <= ERROR) {
+        if (mLevel <= HLogLevel.ERROR) {
             mLog.e(getTag(tag), getMessage(tag, Utils.ex(thr)))
         }
     }
@@ -116,7 +115,7 @@ object HLog {
     @JvmStatic
     @JvmOverloads
     fun log(level: Int, msg: String?, tag: Any? = null) {
-        if (mLevel <= level) {
+        if (mLevel.toAndroidLogLevel() <= level) {
             when (level) {
                 Log.VERBOSE -> {
                     mLog.v(getTag(tag), getMessage(tag, msg))

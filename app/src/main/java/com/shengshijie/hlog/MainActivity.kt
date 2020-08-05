@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), PermissionCallbacks,
     }
 
     fun test(view: View) {
-        HLog.setLevel(LogLevel.DEBUG)
+        HLog.setLevel(HLogLevel.DEBUG)
         thread {
             for (i in 1..1) {
                 HLog.v("VVV",USR)
